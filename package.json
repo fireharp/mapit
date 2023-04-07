@@ -1,6 +1,6 @@
 {
   "name": "mapit",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A utility for mapping fetch actions in your application.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,11 +10,11 @@
     "test": "echo \"TBD\" && exit 0",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
     "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\"",
-    "prepare" : "pnpm run build",
-    "prepublishOnly" : "pnpm test && npm run lint",
-    "preversion" : "pnpm run lint",
-    "version" : "pnpm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm test && npm run lint",
+    "preversion": "pnpm run lint",
+    "version": "pnpm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
