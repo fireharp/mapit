@@ -1,18 +1,35 @@
 {
   "name": "mapit",
   "version": "0.1.3",
-  "description": "",
-  "main": "index.js",
+  "description": "A utility for mapping fetch actions in your application.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "def": "tsc -w",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"TBD\" && exit 0",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(js|ts|json)\"",
+    "prepare" : "pnpm run build",
+    "prepublishOnly" : "pnpm test && npm run lint",
+    "preversion" : "pnpm run lint",
+    "version" : "pnpm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fireharp/mapit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fireharp/mapit/issues"
+  },
+  "homepage": "https://github.com/fireharp/mapit#readme",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Aleksandr Yanitskiy",
+  "license": "BSD-3-Clause",
+  "files": [
+    "dist/**/*"
+  ],
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
