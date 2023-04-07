@@ -1,61 +1,55 @@
-type ApiFunction = (...args: any[]) => Promise<any>;
-type ErrorHandler = (error: any) => void;
+type ApiFunction = (...args: any[]) => Promise<any>
+type ErrorHandler = (error: any) => void
 
 interface MapFetchActionsOptions<T> {
-  stateProperty: keyof T;
-  apiFunction: ApiFunction;
-  errorHandler?: ErrorHandler;
+  stateProperty: keyof T
+  apiFunction: ApiFunction
+  errorHandler?: ErrorHandler
 }
-type ActionFunction<T> = (this: T, ...args: any[]) => Promise<void>;
+type ActionFunction<T> = (this: T, ...args: any[]) => Promise<void>
 
 export const mapFetchActions = <T>(
   actionsMapping: Record<string, MapFetchActionsOptions<T>>,
   errorHandler?: ErrorHandler
 ): Record<string, ActionFunction<T>> => {
-  const actions: Record<string, ActionFunction<T>> = {};
+  const actions: Record<string, ActionFunction<T>> = {}
 
   for (const [actionName, options] of Object.entries(actionsMapping)) {
     actions[actionName] = async function (this: any, ...args: any[]) {
       try {
-        this[options.stateProperty as string] = await options.apiFunction(
-          ...args
-        );
+        this[options.stateProperty as string] = await options.apiFunction(...args)
       } catch (error) {
         if (options.errorHandler != null) {
-          options.errorHandler(error);
+          options.errorHandler(error)
         } else if (errorHandler != null) {
-          errorHandler(error);
+          errorHandler(error)
         } else {
-          throw error;
+          throw error
         }
       }
-    };
+    }
   }
 
-  return actions;
-};
+  return actions
+}
 
 function generateNamesFromKey(key: string | number | symbol): [string, string] {
-  let keyStr: string;
+  let keyStr: string
 
-  if (typeof key === "symbol") {
-    const description = Symbol.keyFor(key);
+  if (typeof key === 'symbol') {
+    const description = Symbol.keyFor(key)
     if (description == null) {
-      throw new Error(
-        "Cannot generate names from a symbol without a description"
-      );
+      throw new Error('Cannot generate names from a symbol without a description')
     }
-    keyStr = description;
+    keyStr = description
   } else {
-    keyStr = key.toString();
+    keyStr = key.toString()
   }
 
-  const actionName = `get${keyStr.charAt(0).toUpperCase()}${keyStr.slice(1)}`;
-  const apiFunctionName = `fetch${keyStr.charAt(0).toUpperCase()}${keyStr.slice(
-    1
-  )}`;
+  const actionName = `get${keyStr.charAt(0).toUpperCase()}${keyStr.slice(1)}`
+  const apiFunctionName = `fetch${keyStr.charAt(0).toUpperCase()}${keyStr.slice(1)}`
 
-  return [actionName, apiFunctionName];
+  return [actionName, apiFunctionName]
 }
 
 export const simplifiedMapFetchActions = <T>(
@@ -63,18 +57,18 @@ export const simplifiedMapFetchActions = <T>(
   api: Record<string, ApiFunction>,
   errorHandler?: ErrorHandler
 ): Record<string, ActionFunction<T>> => {
-  const actionsOptions: Record<string, MapFetchActionsOptions<T>> = {};
+  const actionsOptions: Record<string, MapFetchActionsOptions<T>> = {}
 
   for (const stateProperty of stateProperties) {
-    const [actionName, apiFunctionName] = generateNamesFromKey(stateProperty);
+    const [actionName, apiFunctionName] = generateNamesFromKey(stateProperty)
 
-    const apiFunction = api[apiFunctionName];
+    const apiFunction = api[apiFunctionName]
 
     actionsOptions[actionName] = {
       stateProperty,
       apiFunction,
-    };
+    }
   }
 
-  return mapFetchActions(actionsOptions, errorHandler);
-};
+  return mapFetchActions(actionsOptions, errorHandler)
+}
