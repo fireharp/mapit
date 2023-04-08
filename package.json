@@ -1,6 +1,6 @@
 {
   "name": "@fireharp/mapit",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A utility for mapping fetch actions in your application.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
